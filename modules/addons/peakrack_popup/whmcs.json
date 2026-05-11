@@ -1,0 +1,19 @@
+{
+  "schema": "1.0",
+  "type": "addon",
+  "name": "peakrack_popup",
+  "license": "MIT",
+  "category": "utilities",
+  "description": {
+    "name": "PeakRack Popup",
+    "tagline": "Bilingual client-area popups for promotions, coupons, maintenance notices, urgent announcements, and group-buy campaigns."
+  },
+  "support": {
+    "docs_url": "README.md"
+  },
+  "authors": [
+    {
+      "name": "PeakRack"
+    }
+  ]
+}
