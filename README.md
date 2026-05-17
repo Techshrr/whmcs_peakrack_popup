@@ -14,9 +14,9 @@ It is designed for WHMCS 9.x and PHP 8.3, and can be used for:
 
 ## Package Layout
 
-This folder is an isolated upload package, similar to the existing gateway backup packages.
+The repository keeps documentation at the root and deployable files inside the `whmcs_peakrack_popup` package directory.
 
-Upload the `modules` folder in this package to the root of a self-hosted WHMCS installation. It will place:
+Upload the `modules` folder inside `whmcs_peakrack_popup` to the root of a self-hosted WHMCS installation. It will place:
 
 - `modules/addons/peakrack_popup/peakrack_popup.php`
 - `modules/addons/peakrack_popup/hooks.php`
@@ -26,7 +26,12 @@ Upload the `modules` folder in this package to the root of a self-hosted WHMCS i
 
 ## Installation
 
-1. Upload this package's `modules` folder to the WHMCS root directory.
+1. Upload this package path to the WHMCS root directory:
+
+   ```text
+   whmcs_peakrack_popup/modules
+   ```
+
 2. In WHMCS admin, go to **System Settings > Addon Modules**.
 3. Activate **PeakRack Popup**.
 4. Open **Addons > PeakRack Popup**.
@@ -105,8 +110,15 @@ The token is generated from the WHMCS encryption hash and the current date. The 
 
 ### 1.2.1
 
-- Keeps the flattened release package layout: upload the repository `modules` directory directly to the WHMCS root.
+- Documented the earlier flat `modules` release layout before the 1.2.2 package-directory normalization.
 - Documents bilingual install and upgrade behavior for open-source distribution.
+
+### 1.2.2
+
+- Normalized the open-source repository layout under the `whmcs_peakrack_popup/` deploy package directory.
+- Updated installation documentation so downloads and git clones use the same upload path.
+
+Detailed upgrade notes: [UPGRADE.md](UPGRADE.md).
 
 ## License
 
