@@ -14,9 +14,9 @@ PeakRack Popup 是一个 WHMCS 客户区弹窗管理插件，目标环境为 WHM
 
 ## 文件结构
 
-仓库根目录保留说明文档，真正用于上传部署的文件放在 `whmcs_peakrack_popup` 发布目录中。
+仓库根目录改为更适合 GitHub 浏览的浅层结构，真正用于上传部署的插件目录就是 `peakrack_popup`。
 
-把 `whmcs_peakrack_popup` 目录里的 `modules` 文件夹覆盖上传到 WHMCS 根目录即可，会写入：
+把 `peakrack_popup` 上传或覆盖到 WHMCS 的 `modules/addons/peakrack_popup/` 即可，会写入：
 
 - `modules/addons/peakrack_popup/peakrack_popup.php`
 - `modules/addons/peakrack_popup/hooks.php`
@@ -26,10 +26,10 @@ PeakRack Popup 是一个 WHMCS 客户区弹窗管理插件，目标环境为 WHM
 
 ## 安装方法
 
-1. 上传本包里的这个路径到 WHMCS 根目录：
+1. 上传这个插件目录到 WHMCS：
 
    ```text
-   whmcs_peakrack_popup/modules
+   peakrack_popup/ -> modules/addons/peakrack_popup/
    ```
 
 2. 进入 WHMCS 后台 **系统设置 > 插件模块**。
@@ -114,6 +114,11 @@ networkissues.php
 
 - 将开源仓库结构统一为 `whmcs_peakrack_popup/` 发布目录。
 - 更新安装说明，让下载 ZIP 和 git clone 后的上传路径保持一致。
+
+### 1.2.3
+
+- 压平 GitHub 仓库结构，根目录直接显示 `peakrack_popup/`。
+- 更新安装和升级文档，改为直接上传插件目录到 `modules/addons/`。
 
 详细升级说明见 [UPGRADE.zh-CN.md](UPGRADE.zh-CN.md)。
 

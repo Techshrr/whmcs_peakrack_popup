@@ -14,9 +14,9 @@ It is designed for WHMCS 9.x and PHP 8.3, and can be used for:
 
 ## Package Layout
 
-The repository keeps documentation at the root and deployable files inside the `whmcs_peakrack_popup` package directory.
+The repository root is intentionally shallow for GitHub browsing. The deployable addon is the `peakrack_popup` directory.
 
-Upload the `modules` folder inside `whmcs_peakrack_popup` to the root of a self-hosted WHMCS installation. It will place:
+Upload or copy `peakrack_popup` to `modules/addons/peakrack_popup/` in a self-hosted WHMCS installation. It will place:
 
 - `modules/addons/peakrack_popup/peakrack_popup.php`
 - `modules/addons/peakrack_popup/hooks.php`
@@ -26,10 +26,10 @@ Upload the `modules` folder inside `whmcs_peakrack_popup` to the root of a self-
 
 ## Installation
 
-1. Upload this package path to the WHMCS root directory:
+1. Upload this addon directory to WHMCS:
 
    ```text
-   whmcs_peakrack_popup/modules
+   peakrack_popup/ -> modules/addons/peakrack_popup/
    ```
 
 2. In WHMCS admin, go to **System Settings > Addon Modules**.
@@ -117,6 +117,11 @@ The token is generated from the WHMCS encryption hash and the current date. The 
 
 - Normalized the open-source repository layout under the `whmcs_peakrack_popup/` deploy package directory.
 - Updated installation documentation so downloads and git clones use the same upload path.
+
+### 1.2.3
+
+- Flattened the GitHub repository layout so `peakrack_popup/` is visible at the root.
+- Updated installation and upgrade documentation for the direct addon-folder layout.
 
 Detailed upgrade notes: [UPGRADE.md](UPGRADE.md).
 

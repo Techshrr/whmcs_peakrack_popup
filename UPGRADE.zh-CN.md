@@ -1,5 +1,12 @@
 # 升级说明
 
+## 1.2.3
+
+- 仅调整仓库展示结构：可部署插件目录现在位于仓库根目录 `peakrack_popup/`。
+- 已安装站点升级到此版本不需要修改数据库。
+- 手动更新时，把 `peakrack_popup/` 覆盖上传到 `modules/addons/peakrack_popup/`。
+- 插件版本号升级到 `1.2.3`。
+
 ## 1.2.2
 
 - 仅调整仓库发布目录结构：可部署文件现在位于 `whmcs_peakrack_popup/modules`。
