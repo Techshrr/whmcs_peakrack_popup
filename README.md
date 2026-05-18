@@ -100,7 +100,7 @@ The token is generated from the WHMCS encryption hash and the current date. The 
 
 - No WHMCS template files need to be edited.
 - The frontend uses scoped CSS classes prefixed with `prp-`.
-- The popup type label is rendered beside the title, and its wording follows the selected popup type.
+- The popup type label is rendered above the title, and its wording follows the selected popup type.
 - Button URLs are limited to HTTP(S), root-relative URLs, or common WHMCS PHP routes.
 - Image URLs are limited to HTTP(S) or root-relative URLs.
 - The disabled sample popup is safe to leave in place until you are ready to edit and enable it.
@@ -122,6 +122,13 @@ The token is generated from the WHMCS encryption hash and the current date. The 
 
 - Flattened the GitHub repository layout so `peakrack_popup/` is visible at the root.
 - Updated installation and upgrade documentation for the direct addon-folder layout.
+
+### 1.2.4
+
+- Refined the client-area popup presentation for a cleaner WHMCS/Lagom-friendly look.
+- Reduced heavy borders, shadow, and overlay weight while keeping the popup visible.
+- Moved the popup type label above the title, softened the close button, and improved coupon and CTA spacing.
+- Improved responsive behavior for modal, banner, and corner popup modes without changing database tables.
 
 Detailed upgrade notes: [UPGRADE.md](UPGRADE.md).
 

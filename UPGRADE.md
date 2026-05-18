@@ -1,5 +1,12 @@
 # Upgrade Notes
 
+## 1.2.4
+
+- Frontend presentation update only: no database changes are required.
+- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files.
+- If a popup does not reappear during testing, clear the browser's local storage for the WHMCS site or temporarily set the popup frequency to every page.
+- Addon version bumped to `1.2.4`.
+
 ## 1.2.3
 
 - Repository layout only: the deployable addon now lives at repository root as `peakrack_popup/`.

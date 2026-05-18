@@ -19,7 +19,7 @@ function peakrack_popup_config(): array
     return [
         'name' => 'PeakRack Popup',
         'description' => 'Manage promotional, maintenance, emergency, domain, coupon, and group-buy popups for the WHMCS client area.',
-        'version' => '1.2.3',
+        'version' => '1.2.4',
         'author' => 'PeakRack',
         'language' => 'english',
         'fields' => [],

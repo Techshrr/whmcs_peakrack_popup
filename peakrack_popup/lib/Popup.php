@@ -690,65 +690,74 @@ function peakrackPopupRender(array $popup, array $vars): string
     $couponLabel = peakrackPopupClientText($language, 'coupon');
     $closeLabel = peakrackPopupClientText($language, 'close');
     $laterLabel = peakrackPopupClientText($language, 'later');
+    $labelAttribute = $title !== ''
+        ? ' aria-labelledby="' . peakrackPopupE($rootId) . '-title"'
+        : ' aria-label="' . peakrackPopupE($typeLabel) . '"';
 
     ob_start();
     ?>
     <style>
         .prp-root[hidden]{display:none!important}
-        .prp-root{position:fixed;z-index:2147483000;font-family:Inter,Arial,"Helvetica Neue",Helvetica,sans-serif;color:#111827}
+        .prp-root{position:fixed;z-index:2147483000;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#172033}
         .prp-root *{box-sizing:border-box}
-        .prp-root[data-mode="modal"]{inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(15,23,42,.52);backdrop-filter:blur(2px)}
-        .prp-root[data-mode="top_bar"]{top:14px;left:14px;right:14px;display:flex;justify-content:center;pointer-events:none}
-        .prp-root[data-mode="bottom_bar"]{left:14px;right:14px;bottom:14px;display:flex;justify-content:center;pointer-events:none}
-        .prp-root[data-mode="corner"]{right:18px;bottom:18px;width:min(430px,calc(100vw - 28px));pointer-events:none}
-        .prp-panel{position:relative;width:100%;max-width:640px;overflow:hidden;border:1px solid rgba(148,163,184,.35);border-radius:8px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.28);pointer-events:auto}
-        .prp-root[data-mode="top_bar"] .prp-panel,.prp-root[data-mode="bottom_bar"] .prp-panel{max-width:1040px}
+        .prp-root[data-mode="modal"]{inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(15,23,42,.42);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+        .prp-root[data-mode="top_bar"]{top:16px;left:16px;right:16px;display:flex;justify-content:center;pointer-events:none}
+        .prp-root[data-mode="bottom_bar"]{left:16px;right:16px;bottom:16px;display:flex;justify-content:center;pointer-events:none}
+        .prp-root[data-mode="corner"]{right:20px;bottom:20px;width:min(390px,calc(100vw - 32px));pointer-events:none}
+        .prp-panel{position:relative;width:100%;max-width:620px;overflow:hidden;border:1px solid rgba(148,163,184,.22);border-radius:12px;background:#fff;box-shadow:0 22px 60px rgba(15,23,42,.18),0 2px 8px rgba(15,23,42,.06);pointer-events:auto;animation:prp-in .18s ease-out}
+        .prp-root[data-mode="top_bar"] .prp-panel,.prp-root[data-mode="bottom_bar"] .prp-panel{max-width:980px;border-radius:10px}
         .prp-root[data-mode="corner"] .prp-panel{max-width:none}
-        .prp-accent{height:8px;background:var(--prp-accent)}
-        .prp-close{position:absolute;top:12px;right:12px;width:34px;height:34px;border:0;border-radius:6px;background:transparent;color:#64748b;font-size:24px;line-height:30px;cursor:pointer}
-        .prp-close:hover{background:#f1f5f9;color:#0f172a}
-        .prp-inner{display:block;padding:26px}
-        .prp-inner.prp-has-media{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px}
-        .prp-media{width:150px;min-width:150px;aspect-ratio:1.18;border-radius:8px;overflow:hidden;background:linear-gradient(135deg,#eff6ff,#f8fafc)}
+        .prp-accent{height:4px;background:linear-gradient(90deg,var(--prp-accent),color-mix(in srgb,var(--prp-accent) 24%,#fff))}
+        .prp-close{position:absolute;top:12px;right:12px;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid transparent;border-radius:999px;background:rgba(255,255,255,.92);color:#667085;font-size:21px;line-height:1;cursor:pointer;transition:background .16s ease,color .16s ease,border-color .16s ease}
+        .prp-close:hover{background:#f8fafc;border-color:#e2e8f0;color:#0f172a}
+        .prp-inner{display:block;padding:28px}
+        .prp-inner.prp-has-media{display:grid;grid-template-columns:178px minmax(0,1fr);gap:24px}
+        .prp-media{width:178px;min-width:178px;aspect-ratio:1.18;border-radius:10px;overflow:hidden;background:#f4f7fb}
         .prp-media img{width:100%;height:100%;object-fit:cover;display:block}
         .prp-content{min-width:0;padding-right:34px}
-        .prp-title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 10px}
-        .prp-kicker{display:inline-flex;align-items:center;max-width:100%;margin:0;padding:4px 9px;border-radius:999px;background:color-mix(in srgb,var(--prp-accent) 12%,#fff);color:var(--prp-accent);font-size:12px;line-height:1.3;font-weight:700;text-transform:none}
-        .prp-title{margin:0;font-size:23px;line-height:1.24;font-weight:750;color:#0f172a;letter-spacing:0}
-        .prp-body{margin:0;color:#475569;font-size:14px;line-height:1.65;white-space:pre-line;overflow-wrap:anywhere}
-        .prp-coupon{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;width:min(100%,460px);margin-top:17px;padding:12px;border:1px solid color-mix(in srgb,var(--prp-accent) 45%,#dbeafe);border-radius:8px;background:#f8fafc}
-        .prp-coupon-label{display:block;margin-bottom:2px;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-        .prp-coupon-code{display:block;color:#0f172a;font-size:15px;font-weight:800;letter-spacing:.04em;overflow-wrap:anywhere}
-        .prp-copy{border:0;border-radius:6px;background:var(--prp-accent);color:#fff;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
-        .prp-actions{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-top:18px;text-align:left}
-        .prp-button{display:inline-flex;align-items:center;justify-content:center;min-width:132px;min-height:40px;border-radius:6px;background:var(--prp-accent);color:#fff!important;padding:9px 17px;text-decoration:none!important;font-size:14px;font-weight:750;box-shadow:0 8px 18px color-mix(in srgb,var(--prp-accent) 22%,transparent)}
-        .prp-button:hover{filter:brightness(.95);color:#fff!important}
-        .prp-secondary{border:0;background:transparent;color:#64748b;font-size:13px;cursor:pointer;padding:8px 2px}
-        .prp-secondary:hover{color:#0f172a}
-        .prp-root[data-mode="top_bar"] .prp-inner,.prp-root[data-mode="bottom_bar"] .prp-inner{grid-template-columns:minmax(0,1fr) auto;align-items:center;padding:16px 18px}
+        .prp-heading{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:0 0 12px}
+        .prp-kicker{display:inline-flex;align-items:center;max-width:100%;margin:0;padding:4px 8px;border-radius:999px;background:color-mix(in srgb,var(--prp-accent) 10%,#fff);color:var(--prp-accent);font-size:11px;line-height:1.25;font-weight:700;text-transform:none}
+        .prp-title{margin:0;font-size:22px;line-height:1.28;font-weight:750;color:#111827;letter-spacing:0}
+        .prp-body{margin:0;color:#4b5563;font-size:14px;line-height:1.7;white-space:pre-line;overflow-wrap:anywhere}
+        .prp-coupon{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;width:min(100%,430px);margin-top:18px;padding:12px 14px;border:1px dashed color-mix(in srgb,var(--prp-accent) 48%,#cbd5e1);border-radius:10px;background:color-mix(in srgb,var(--prp-accent) 4%,#fff)}
+        .prp-coupon-label{display:block;margin-bottom:3px;color:#667085;font-size:11px;font-weight:700;text-transform:none;letter-spacing:0}
+        .prp-coupon-code{display:block;color:#111827;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;font-weight:800;letter-spacing:.02em;overflow-wrap:anywhere}
+        .prp-copy{border:0;border-radius:8px;background:var(--prp-accent);color:#fff;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+        .prp-copy:hover{filter:brightness(.96)}
+        .prp-actions{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-top:20px;text-align:left}
+        .prp-button{display:inline-flex;align-items:center;justify-content:center;min-width:128px;min-height:40px;border-radius:8px;background:var(--prp-accent);color:#fff!important;padding:9px 18px;text-decoration:none!important;font-size:14px;font-weight:750;box-shadow:0 10px 20px color-mix(in srgb,var(--prp-accent) 20%,transparent);transition:filter .16s ease,transform .16s ease}
+        .prp-button:hover{filter:brightness(.96);color:#fff!important;transform:translateY(-1px)}
+        .prp-secondary{border:0;background:transparent;color:#667085;font-size:13px;cursor:pointer;padding:8px 2px}
+        .prp-secondary:hover{color:#111827}
+        .prp-root[data-mode="top_bar"] .prp-inner,.prp-root[data-mode="bottom_bar"] .prp-inner{grid-template-columns:minmax(0,1fr) auto;align-items:center;padding:15px 18px}
         .prp-root[data-mode="top_bar"] .prp-media,.prp-root[data-mode="bottom_bar"] .prp-media{display:none}
-        .prp-root[data-mode="top_bar"] .prp-title-row,.prp-root[data-mode="bottom_bar"] .prp-title-row{margin-bottom:4px}
-        .prp-root[data-mode="top_bar"] .prp-title,.prp-root[data-mode="bottom_bar"] .prp-title{font-size:18px}
-        .prp-root[data-mode="top_bar"] .prp-body,.prp-root[data-mode="bottom_bar"] .prp-body{line-height:1.45}
-        .prp-root[data-mode="top_bar"] .prp-coupon,.prp-root[data-mode="bottom_bar"] .prp-coupon{margin-top:10px}
+        .prp-root[data-mode="top_bar"] .prp-heading,.prp-root[data-mode="bottom_bar"] .prp-heading{gap:6px;margin-bottom:4px}
+        .prp-root[data-mode="top_bar"] .prp-title,.prp-root[data-mode="bottom_bar"] .prp-title{font-size:17px}
+        .prp-root[data-mode="top_bar"] .prp-body,.prp-root[data-mode="bottom_bar"] .prp-body{line-height:1.5}
+        .prp-root[data-mode="top_bar"] .prp-coupon,.prp-root[data-mode="bottom_bar"] .prp-coupon{margin-top:10px;padding:9px 11px}
         .prp-root[data-mode="top_bar"] .prp-actions,.prp-root[data-mode="bottom_bar"] .prp-actions{margin-top:0;flex-direction:row;flex-shrink:0}
         .prp-root[data-mode="top_bar"] .prp-content,.prp-root[data-mode="bottom_bar"] .prp-content{padding-right:38px}
+        .prp-root[data-mode="corner"] .prp-inner{padding:24px}
+        .prp-root[data-mode="corner"] .prp-title{font-size:19px}
+        @keyframes prp-in{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
         @supports not (background:color-mix(in srgb,#000 10%,#fff)){
             .prp-kicker{background:#eef2ff}
-            .prp-coupon{border-color:#bfdbfe}
+            .prp-accent{background:var(--prp-accent)}
+            .prp-coupon{border-color:#c7d2fe;background:#f8fafc}
             .prp-button{box-shadow:0 8px 18px rgba(37,99,235,.18)}
         }
+        @media (prefers-reduced-motion:reduce){.prp-panel{animation:none}.prp-button{transition:none}.prp-button:hover{transform:none}}
         @media (max-width:640px){
-            .prp-root[data-mode="modal"]{align-items:flex-end;padding:12px}
+            .prp-root[data-mode="modal"]{align-items:flex-end;padding:12px;background:rgba(15,23,42,.34)}
             .prp-root[data-mode="top_bar"],.prp-root[data-mode="bottom_bar"]{left:10px;right:10px}
             .prp-root[data-mode="corner"]{left:10px;right:10px;bottom:10px;width:auto}
-            .prp-panel{max-width:none;border-radius:8px}
-            .prp-inner{display:block;padding:22px 18px 18px}
+            .prp-panel{max-width:none;border-radius:12px}
+            .prp-inner,.prp-root[data-mode="corner"] .prp-inner{display:block;padding:22px 18px 18px}
             .prp-media{width:100%;min-width:0;margin-bottom:15px;max-height:190px}
             .prp-content{padding-right:24px}
             .prp-title{font-size:20px}
             .prp-actions{flex-direction:column;align-items:stretch;text-align:center}
-            .prp-button{width:100%;max-width:240px}
+            .prp-button{width:100%;max-width:none}
             .prp-secondary{width:100%}
             .prp-coupon{grid-template-columns:1fr;width:100%}
             .prp-copy{width:100%}
@@ -770,7 +779,7 @@ function peakrackPopupRender(array $popup, array $vars): string
         data-copy-label="<?php echo peakrackPopupE($copyLabel); ?>"
         data-copied-label="<?php echo peakrackPopupE($copiedLabel); ?>"
         style="--prp-accent: <?php echo peakrackPopupE($accent); ?>;">
-        <div class="prp-panel" role="<?php echo $mode === 'modal' ? 'dialog' : 'status'; ?>" aria-modal="<?php echo $mode === 'modal' ? 'true' : 'false'; ?>" aria-labelledby="<?php echo peakrackPopupE($rootId); ?>-title">
+        <div class="prp-panel" role="<?php echo $mode === 'modal' ? 'dialog' : 'status'; ?>" aria-modal="<?php echo $mode === 'modal' ? 'true' : 'false'; ?>"<?php echo $labelAttribute; ?>>
             <div class="prp-accent"></div>
             <button type="button" class="prp-close" aria-label="<?php echo peakrackPopupE($closeLabel); ?>">&times;</button>
             <div class="prp-inner <?php echo $imageUrl !== '' ? 'prp-has-media' : 'prp-no-media'; ?>">
@@ -778,11 +787,11 @@ function peakrackPopupRender(array $popup, array $vars): string
                     <div class="prp-media"><img src="<?php echo peakrackPopupE($imageUrl); ?>" alt=""></div>
                 <?php endif; ?>
                 <div class="prp-content">
-                    <div class="prp-title-row">
+                    <div class="prp-heading">
+                        <span class="prp-kicker"><?php echo peakrackPopupE($typeLabel); ?></span>
                         <?php if ($title !== ''): ?>
                             <h3 class="prp-title" id="<?php echo peakrackPopupE($rootId); ?>-title"><?php echo peakrackPopupE($title); ?></h3>
                         <?php endif; ?>
-                        <span class="prp-kicker"><?php echo peakrackPopupE($typeLabel); ?></span>
                     </div>
                     <?php if ($body !== ''): ?>
                         <p class="prp-body"><?php echo peakrackPopupE($body); ?></p>
