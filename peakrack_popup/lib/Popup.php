@@ -383,6 +383,7 @@ function peakrackPopupClientText(string $language, string $key): string
             'copied' => '已复制',
             'coupon' => '优惠码',
             'later' => '稍后再说',
+            'auto_close' => '{seconds}秒后自动关闭',
         ],
         'en' => [
             'close' => 'Close',
@@ -390,6 +391,7 @@ function peakrackPopupClientText(string $language, string $key): string
             'copied' => 'Copied',
             'coupon' => 'Coupon code',
             'later' => 'Maybe later',
+            'auto_close' => 'Auto-closes in {seconds}s',
         ],
     ];
 
@@ -690,6 +692,8 @@ function peakrackPopupRender(array $popup, array $vars): string
     $couponLabel = peakrackPopupClientText($language, 'coupon');
     $closeLabel = peakrackPopupClientText($language, 'close');
     $laterLabel = peakrackPopupClientText($language, 'later');
+    $autoCloseTemplate = peakrackPopupClientText($language, 'auto_close');
+    $autoCloseLabel = str_replace('{seconds}', (string) $autoClose, $autoCloseTemplate);
     $labelAttribute = $title !== ''
         ? ' aria-labelledby="' . peakrackPopupE($rootId) . '-title"'
         : ' aria-label="' . peakrackPopupE($typeLabel) . '"';
@@ -729,6 +733,8 @@ function peakrackPopupRender(array $popup, array $vars): string
         .prp-button:hover{filter:brightness(.96);color:#fff!important;transform:translateY(-1px)}
         .prp-secondary{border:0;background:transparent;color:#667085;font-size:13px;cursor:pointer;padding:8px 2px}
         .prp-secondary:hover{color:#111827}
+        .prp-autoclose{display:flex;align-items:center;gap:7px;margin:12px 0 0;color:#667085;font-size:12px;line-height:1.45}
+        .prp-autoclose::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--prp-accent);opacity:.72;flex:0 0 auto}
         .prp-root[data-mode="top_bar"] .prp-inner,.prp-root[data-mode="bottom_bar"] .prp-inner{grid-template-columns:minmax(0,1fr) auto;align-items:center;padding:15px 18px}
         .prp-root[data-mode="top_bar"] .prp-media,.prp-root[data-mode="bottom_bar"] .prp-media{display:none}
         .prp-root[data-mode="top_bar"] .prp-heading,.prp-root[data-mode="bottom_bar"] .prp-heading{gap:6px;margin-bottom:4px}
@@ -736,6 +742,7 @@ function peakrackPopupRender(array $popup, array $vars): string
         .prp-root[data-mode="top_bar"] .prp-body,.prp-root[data-mode="bottom_bar"] .prp-body{line-height:1.5}
         .prp-root[data-mode="top_bar"] .prp-coupon,.prp-root[data-mode="bottom_bar"] .prp-coupon{margin-top:10px;padding:9px 11px}
         .prp-root[data-mode="top_bar"] .prp-actions,.prp-root[data-mode="bottom_bar"] .prp-actions{margin-top:0;flex-direction:row;flex-shrink:0}
+        .prp-root[data-mode="top_bar"] .prp-autoclose,.prp-root[data-mode="bottom_bar"] .prp-autoclose{margin-top:8px}
         .prp-root[data-mode="top_bar"] .prp-content,.prp-root[data-mode="bottom_bar"] .prp-content{padding-right:38px}
         .prp-root[data-mode="corner"] .prp-inner{padding:24px}
         .prp-root[data-mode="corner"] .prp-title{font-size:19px}
@@ -774,6 +781,7 @@ function peakrackPopupRender(array $popup, array $vars): string
         data-lang="<?php echo peakrackPopupE($language); ?>"
         data-delay="<?php echo $delay; ?>"
         data-auto-close="<?php echo $autoClose; ?>"
+        data-auto-close-template="<?php echo peakrackPopupE($autoCloseTemplate); ?>"
         data-track-url="<?php echo peakrackPopupE($trackUrl); ?>"
         data-track-token="<?php echo peakrackPopupE($token); ?>"
         data-copy-label="<?php echo peakrackPopupE($copyLabel); ?>"
@@ -811,6 +819,9 @@ function peakrackPopupRender(array $popup, array $vars): string
                         <?php endif; ?>
                         <button type="button" class="prp-secondary"><?php echo peakrackPopupE($laterLabel); ?></button>
                     </div>
+                    <?php if ($autoClose > 0): ?>
+                        <p class="prp-autoclose" data-autoclose-message aria-live="polite"><?php echo peakrackPopupE($autoCloseLabel); ?></p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -833,8 +844,11 @@ function peakrackPopupRender(array $popup, array $vars): string
         var closeButtons = root.querySelectorAll('.prp-close,.prp-secondary');
         var copyButton = root.querySelector('.prp-copy');
         var primaryButton = root.querySelector('.prp-button');
+        var autoCloseMessage = root.querySelector('[data-autoclose-message]');
         var copyLabel = root.getAttribute('data-copy-label') || 'Copy';
         var copiedLabel = root.getAttribute('data-copied-label') || 'Copied';
+        var autoCloseTemplate = root.getAttribute('data-auto-close-template') || '{seconds}s';
+        var autoCloseTimer = null;
         var shown = false;
 
         function today() {
@@ -907,6 +921,38 @@ function peakrackPopupRender(array $popup, array $vars): string
             } catch (e) {}
         }
 
+        function updateAutoCloseMessage(seconds) {
+            if (!autoCloseMessage) {
+                return;
+            }
+            autoCloseMessage.textContent = autoCloseTemplate.replace('{seconds}', String(Math.max(0, seconds)));
+        }
+
+        function stopAutoCloseTimer() {
+            if (autoCloseTimer !== null) {
+                window.clearInterval(autoCloseTimer);
+                autoCloseTimer = null;
+            }
+        }
+
+        function startAutoCloseTimer() {
+            if (autoClose <= 0) {
+                return;
+            }
+
+            var remaining = autoClose;
+            updateAutoCloseMessage(remaining);
+            autoCloseTimer = window.setInterval(function () {
+                remaining -= 1;
+                if (remaining <= 0) {
+                    stopAutoCloseTimer();
+                    close();
+                    return;
+                }
+                updateAutoCloseMessage(remaining);
+            }, 1000);
+        }
+
         function show() {
             if (shown || !shouldShow()) {
                 return;
@@ -915,15 +961,14 @@ function peakrackPopupRender(array $popup, array $vars): string
             root.hidden = false;
             track('view');
 
-            if (autoClose > 0) {
-                window.setTimeout(close, autoClose * 1000);
-            }
+            startAutoCloseTimer();
         }
 
         function close() {
             if (root.hidden) {
                 return;
             }
+            stopAutoCloseTimer();
             markSeen();
             root.hidden = true;
             track('close');

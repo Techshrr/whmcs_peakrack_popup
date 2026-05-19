@@ -58,7 +58,7 @@ Deactivation keeps both tables so campaign history and counters are not lost.
 - Frequency controls: every visit, once per session, once per day, or once per browser.
 - Per-popup accent color picker for the top bar, type label, coupon border, and CTA button.
 - Coupon display with copy button.
-- Optional image, CTA button, priority, delay, and auto-close.
+- Optional image, CTA button, priority, delay, and auto-close with a small frontend countdown hint.
 - Basic counters for views, clicks, and closes.
 
 ## Bilingual Content
@@ -101,6 +101,7 @@ The token is generated from the WHMCS encryption hash and the current date. The 
 - No WHMCS template files need to be edited.
 - The frontend uses scoped CSS classes prefixed with `prp-`.
 - The popup type label is rendered above the title, and its wording follows the selected popup type.
+- When auto-close seconds are configured, the frontend shows a subtle live countdown such as `Auto-closes in 10s`.
 - Button URLs are limited to HTTP(S), root-relative URLs, or common WHMCS PHP routes.
 - Image URLs are limited to HTTP(S) or root-relative URLs.
 - The disabled sample popup is safe to leave in place until you are ready to edit and enable it.
@@ -129,6 +130,12 @@ The token is generated from the WHMCS encryption hash and the current date. The 
 - Reduced heavy borders, shadow, and overlay weight while keeping the popup visible.
 - Moved the popup type label above the title, softened the close button, and improved coupon and CTA spacing.
 - Improved responsive behavior for modal, banner, and corner popup modes without changing database tables.
+
+### 1.2.5
+
+- Added a subtle frontend countdown hint when auto-close seconds are configured.
+- The countdown follows the client-area language and updates once per second.
+- No database changes are required.
 
 Detailed upgrade notes: [UPGRADE.md](UPGRADE.md).
 

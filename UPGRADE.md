@@ -1,5 +1,12 @@
 # Upgrade Notes
 
+## 1.2.5
+
+- Frontend behavior update only: no database changes are required.
+- Auto-close popups now show a subtle live countdown in the client area.
+- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files.
+- Addon version bumped to `1.2.5`.
+
 ## 1.2.4
 
 - Frontend presentation update only: no database changes are required.
