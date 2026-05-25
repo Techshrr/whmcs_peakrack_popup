@@ -1,5 +1,21 @@
-* text=auto
+* text=auto eol=lf
+
 *.php text eol=lf
 *.md text eol=lf
+*.txt text eol=lf
 *.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.xml text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.tpl text eol=lf
+LICENSE text eol=lf
+NOTICE text eol=lf
+VERSION text eol=lf
+
 *.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary

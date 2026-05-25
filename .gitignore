@@ -1,0 +1,47 @@
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Composer
+/vendor/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+storage/logs/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.old
+
+# Local packages
+/dist/
+/dist-commercial/
+/build/
+/release/
+*.zip
+*.tar
+*.tar.gz
+
+# WHMCS sensitive/runtime files
+configuration.php
+configuration.php.back
+attachments/
+downloads/
+templates_c/
+crons/
+*.sql
+*.sql.gz

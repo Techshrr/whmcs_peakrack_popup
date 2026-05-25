@@ -1,84 +1,59 @@
-# Upgrade Notes
+# Upgrade Guide
 
-## 1.6.1
+This guide explains how to upgrade this module from an older version.
 
-- Frontend presentation update only: no database changes are required.
-- Image popups now have clearer close affordances: top close button, bottom close button, Escape key, and overlay click.
-- Image and poster media now use white, ratio-preserving containers to avoid dark side bars and unwanted artwork cropping.
-- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files. Keep any runtime images already uploaded under `assets/images/`.
-- Addon version bumped to `1.6.1`.
+## Before upgrading
 
-## 1.6.0
+1. Back up the WHMCS files.
+2. Back up the WHMCS database.
+3. Make a copy of `modules/addons/peakrack_popup/`.
+4. Review [CHANGELOG.md](CHANGELOG.md).
+5. Check whether the upgrade includes database changes.
 
-- Admin behavior update only: no database changes are required.
-- Image popups now support either a manual Image URL or an uploaded image file.
-- Uploaded images are stored in `modules/addons/peakrack_popup/assets/images/`. Make sure the addon directory is writable by the web server if you want to use uploads.
-- Existing uploaded images live in the installed WHMCS addon directory and are runtime data. Keep them when replacing addon files.
-- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files.
-- Addon version bumped to `1.6.0`.
+## Upgrade steps
 
-## 1.5.0
+1. Download the latest release from the official repository:
 
-- Database migration release. The addon creates `mod_peakrack_popup_styles` and adds `style_id` to popups automatically.
-- A default set of reusable styles is seeded when the addon page or frontend hook runs.
-- Popups can select a reusable Style. Selected Styles override display mode, theme, accent color, size, animation, scoped custom CSS, and optional HTML templates.
-- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files.
-- Addon version bumped to `1.5.0`.
+   https://github.com/Techshrr/whmcs_peakrack_popup
 
-## 1.4.0
+2. Replace the addon files in:
 
-- Admin and frontend behavior update only: no database changes are required.
-- Popup `Type` now follows the official-style content model: `Text`, `HTML`, or `Image`.
-- Legacy business categories such as promotion, coupon, domain, maintenance, urgent, and group-buy are no longer shown or used.
-- The dedicated coupon field and coupon renderer were removed. Add coupon text directly inside Text or HTML content if needed.
-- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files.
-- Addon version bumped to `1.4.0`.
+   `modules/addons/peakrack_popup/`
 
-## 1.3.1
+3. Keep existing uploaded images under `modules/addons/peakrack_popup/assets/images/` unless the release notes say otherwise.
+4. Log in to the WHMCS admin area.
+5. Open **Addons > PeakRack Popup** and verify popups, styles, and upload paths.
+6. Clear the WHMCS template cache if client-area output does not update.
 
-- Frontend rendering and admin-validation update only: no database changes are required.
-- Image content format now requires a valid image URL and renders as an image-first popup. Title, body, and button fields remain optional.
-- Legacy coupon-specific handling was deprecated and is fully removed in `1.4.0`.
-- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files.
-- Addon version bumped to `1.3.1`.
+## Database migrations
 
-## 1.3.0
+This version does not require manual database migration.
 
-- Database migration release. The addon automatically adds the new campaign, targeting, archive, sizing, animation, display-limit, and due-date columns when the addon page or frontend hook runs.
-- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files.
-- Optional cron: add `php -q /path/to/whmcs/modules/addons/peakrack_popup/cron.php` if you want expired popups to be marked disabled in the database.
-- Review raw HTML popups after upgrade. HTML content is intentionally rendered as trusted administrator content.
-- Addon version bumped to `1.3.0`.
+The addon updates its database structure from module code when the admin page, frontend hook, upgrade hook, or cron file runs.
 
-## 1.2.5
+## Version-specific notes
 
-- Frontend behavior update only: no database changes are required.
-- Auto-close popups now show a subtle live countdown in the client area.
-- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files.
-- Addon version bumped to `1.2.5`.
+### Upgrade from 1.5.x to 1.6.x
 
-## 1.2.4
+- No breaking changes.
+- Existing popups and styles are preserved.
+- Image uploads use `modules/addons/peakrack_popup/assets/images/`.
 
-- Frontend presentation update only: no database changes are required.
-- Manual update: copy `peakrack_popup/` to `modules/addons/peakrack_popup/` and overwrite the existing addon files.
-- If a popup does not reappear during testing, clear the browser's local storage for the WHMCS site or temporarily set the popup frequency to every page.
-- Addon version bumped to `1.2.4`.
+### Upgrade from 1.3.x to 1.4.x
 
-## 1.2.3
+- Legacy popup categories are no longer used by the admin UI or renderer.
+- Existing database columns are kept for compatibility.
 
-- Repository layout only: the deployable addon now lives at repository root as `peakrack_popup/`.
-- Existing WHMCS installs do not need database changes for this release.
-- When updating manually, copy `peakrack_popup/` to `modules/addons/peakrack_popup/`.
-- Addon version bumped to `1.2.3`.
+## Rollback
 
-## 1.2.2
+To roll back:
 
-- Repository layout only: deployable files now live under `whmcs_peakrack_popup/modules`.
-- Existing WHMCS installs do not need database changes for this release.
-- When updating manually, copy the new `whmcs_peakrack_popup/modules` directory contents over your WHMCS root.
-- Addon version bumped to `1.2.2`.
+1. Restore the previous `modules/addons/peakrack_popup/` directory.
+2. Restore the database backup if the upgrade changed module tables.
+3. Restore uploaded images if they were changed.
+4. Clear the WHMCS template cache.
+5. Check the WHMCS activity log for errors.
 
-## 1.2.1
+## Notes
 
-- Kept the flattened release package layout.
-- Documented bilingual install and upgrade behavior for open-source distribution.
+Do not overwrite production credentials, local configuration files, custom templates, callback secrets, or payment credentials unless the upgrade notes explicitly require it.

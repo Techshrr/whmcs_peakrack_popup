@@ -1,10 +1,14 @@
 <?php
+// SPDX-License-Identifier: MIT
 
 /**
- * Optional maintenance cron for PeakRack Popup.
+ * PeakRack Popup for WHMCS
  *
- * Usage:
- * php -q /path/to/whmcs/modules/addons/peakrack_popup/cron.php
+ * Official repository:
+ * https://github.com/Techshrr/whmcs_peakrack_popup
+ *
+ * Copyright (c) 2026 PeakRack.
+ * Licensed under the MIT License.
  */
 
 use WHMCS\Database\Capsule;

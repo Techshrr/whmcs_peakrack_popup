@@ -1,9 +1,14 @@
 <?php
+// SPDX-License-Identifier: MIT
 
 /**
- * PeakRack Popup addon module for WHMCS.
+ * PeakRack Popup for WHMCS
  *
- * Target runtime: WHMCS 9.x / PHP 8.3.
+ * Official repository:
+ * https://github.com/Techshrr/whmcs_peakrack_popup
+ *
+ * Copyright (c) 2026 PeakRack.
+ * Licensed under the MIT License.
  */
 
 use WHMCS\Database\Capsule;
